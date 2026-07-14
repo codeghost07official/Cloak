@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloak — Premium Image Steganography</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="background-decor">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="main-header animate-fade-in">
+            <div class="logo">
+                <i data-lucide="shield-alert" class="logo-icon"></i>
+                <span class="logo-text">CLOAK</span>
+            </div>
+            <p class="subtitle">Securely hide and reveal encrypted messages within images using advanced LSB steganography.</p>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="workspace animate-slide-up">
+            <!-- Tabs Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" data-tab="hide">
+                    <i data-lucide="eye-off" class="tab-icon"></i>
+                    <span>Hide Secret</span>
+                </button>
+                <button class="tab-btn" data-tab="reveal">
+                    <i data-lucide="eye" class="tab-icon"></i>
+                    <span>Reveal Secret</span>
+                </button>
+                <div class="tab-indicator"></div>
+            </div>
+
+            <!-- Tab Panels -->
+            <div class="panels-container">
+                <!-- PANEL: HIDE -->
+                <section class="tab-panel active" id="panel-hide">
+                    <div class="panel-grid">
+                        <!-- Left: File Upload & Preview -->
+                        <div class="panel-card glass-card upload-section">
+                            <h3 class="card-title">
+                                <span class="step-num">1</span>
+                                Source Image
+                            </h3>
+                            <div class="drag-drop-zone" id="drag-zone-hide">
+                                <input type="file" id="file-hide" accept=".png,.bmp,.tiff,.webp,.jpg,.jpeg" class="file-input">
+                                <div class="drop-zone-prompt">
+                                    <div class="icon-wrapper">
+                                        <i data-lucide="upload-cloud" class="upload-icon animate-pulse-slow"></i>
+                                    </div>
+                                    <p class="prompt-text">Drag & drop your image, or <span class="browse-btn">browse</span></p>
+                                    <p class="format-hint">Supports PNG, BMP, TIFF, WebP, JPG, JPEG</p>
+                                    <p class="size-hint">Max file size: 500MB</p>
+                                </div>
+                                <div class="preview-container hidden" id="preview-container-hide">
+                                    <img id="img-preview-hide" class="img-preview" src="" alt="Source preview">
+                                    <button class="remove-btn" id="remove-img-hide" title="Remove Image">
+                                        <i data-lucide="x"></i>
+                                    </button>
+                                    <div class="image-meta" id="meta-hide"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Secret Text & Action -->
+                        <div class="panel-card glass-card action-section">
+                            <h3 class="card-title">
+                                <span class="step-num">2</span>
+                                Hide Message
+                            </h3>
+                            <form id="form-encode" onsubmit="return false;">
+                                <div class="form-group">
+                                    <label for="secret-message">Secret Message</label>
+                                    <div class="textarea-wrapper">
+                                        <textarea id="secret-message" name="message" placeholder="Type your highly sensitive message here..." maxlength="50000" required></textarea>
+                                        <div class="char-counter">
+                                            <span id="char-count">0</span> chars
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="submit-btn" id="btn-encode">
+                                    <span class="btn-text">Encode & Secure</span>
+                                    <div class="loader hidden"></div>
+                                </button>
+                            </form>
+
+                            <!-- Results Section -->
+                            <div class="result-box hidden" id="result-box-hide">
+                                <div class="result-header">
+                                    <i data-lucide="check-circle" class="success-icon"></i>
+                                    <div>
+                                        <h4>Successfully Secured!</h4>
+                                        <p class="result-desc">The message is now seamlessly embedded into your image.</p>
+                                    </div>
+                                </div>
+                                <div class="download-container">
+                                    <img id="result-preview" class="result-preview-img" src="" alt="Result preview">
+                                    <div class="download-meta">
+                                        <p class="download-filename" id="download-name">cloak_encoded.png</p>
+                                        <a href="#" id="download-link" download class="download-btn">
+                                            <i data-lucide="download"></i>
+                                            <span>Download PNG</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PANEL: REVEAL -->
+                <section class="tab-panel" id="panel-reveal">
+                    <div class="panel-grid">
+                        <!-- Left: File Upload & Preview -->
+                        <div class="panel-card glass-card upload-section">
+                            <h3 class="card-title">
+                                <span class="step-num">1</span>
+                                Encoded Image
+                            </h3>
+                            <div class="drag-drop-zone" id="drag-zone-reveal">
+                                <input type="file" id="file-reveal" accept=".png,.bmp,.tiff,.webp,.jpg,.jpeg" class="file-input">
+                                <div class="drop-zone-prompt">
+                                    <div class="icon-wrapper">
+                                        <i data-lucide="upload-cloud" class="upload-icon animate-pulse-slow"></i>
+                                    </div>
+                                    <p class="prompt-text">Drag & drop your encoded image, or <span class="browse-btn">browse</span></p>
+                                    <p class="format-hint">Supports PNG, BMP, TIFF, WebP, JPG, JPEG</p>
+                                    <p class="size-hint">Max file size: 16MB</p>
+                                </div>
+                                <div class="preview-container hidden" id="preview-container-reveal">
+                                    <img id="img-preview-reveal" class="img-preview" src="" alt="Encoded preview">
+                                    <button class="remove-btn" id="remove-img-reveal" title="Remove Image">
+                                        <i data-lucide="x"></i>
+                                    </button>
+                                    <div class="image-meta" id="meta-reveal"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Action & Decoded Output -->
+                        <div class="panel-card glass-card action-section">
+                            <h3 class="card-title">
+                                <span class="step-num">2</span>
+                                Extract Message
+                            </h3>
+                            <div class="reveal-action-container">
+                                <button type="button" class="submit-btn" id="btn-decode">
+                                    <span class="btn-text">Reveal Hidden Text</span>
+                                    <div class="loader hidden"></div>
+                                </button>
+                            </div>
+
+                            <!-- Decoded Output Box -->
+                            <div class="decoded-box hidden" id="result-box-reveal">
+                                <label for="decoded-message">Extracted Message</label>
+                                <div class="textarea-wrapper">
+                                    <textarea id="decoded-message" readonly placeholder="No message revealed yet..."></textarea>
+                                    <button class="copy-btn" id="btn-copy" title="Copy to Clipboard">
+                                        <i data-lucide="copy" class="copy-icon"></i>
+                                        <span>Copy Message</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="main-footer animate-fade-in">
+            <p>&copy; 2026 Cloak Steganography. Built for ultimate operational privacy. No image metadata or image files are stored on our servers.</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        // Pre-initialize lucide icons
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+    <!-- JS Logic -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
