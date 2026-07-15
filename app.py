@@ -180,5 +180,13 @@ def request_entity_too_large(error):
         'error': 'The uploaded file is too large. Maximum file size allowed is 500MB.'
     }), 413
 
-if __name__ == '__main__':
-    app.run(debug=True)
+'''For local use ⬇️'''
+
+# if __name__ == '__main__':
+#     app.run(debug=True)
+
+'''For deployment ⬇️'''
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
